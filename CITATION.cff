@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite the accompanying preprint."
+title: "Omega-N: Interpretable Structural Node Descriptors and Their Applicability Domain"
+authors:
+  - family-names: Acedo
+    given-names: Alberto
+    affiliation: "Biome Makers Inc"
+year: 2026
+license: MIT
+repository-code: "https://github.com/BiomeMakers/OmegaN"
