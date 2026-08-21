@@ -94,6 +94,8 @@ script documents where its data comes from.
 
 ## Notebooks
 
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/BiomeMakers/OmegaN/blob/main/notebooks/gap_matched_null.ipynb)
+
 `notebooks/gap_matched_null.ipynb` builds families of graphs matched on the spectral
 gap but separated in local triadic organisation. It is the null model described as
 missing in whole-brain modelling work where the gap and local density are
