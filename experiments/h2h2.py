@@ -50,6 +50,21 @@ k = np.asarray(A.sum(1)).ravel()
 print(f"n={n} aristas={int(A.nnz/2)} grado medio={k.mean():.1f} ({time.time()-t0:.0f}s)",
       flush=True)
 
+
+# ---------- restriccion a la componente mayor
+# Sin esto lambda_2 = 0 y las tres columnas fiedler_* quedan inertes: omega_n
+# avisa de ello. STRING trae 126 componentes y BioPlex 17, casi todas diminutas.
+from scipy.sparse.csgraph import connected_components as _cc  # noqa: E402
+_, _lab = _cc(A, directed=False)
+_keep = np.where(_lab == np.bincount(_lab).argmax())[0]
+if len(_keep) < A.shape[0]:
+    A = csr_matrix(A[_keep][:, _keep])
+    nodes = [nodes[i] for i in _keep]
+    n = len(nodes)
+    k = np.asarray(A.sum(1)).ravel()
+    print(f"componente mayor: {n} nodos, {int(A.nnz/2)} aristas, "
+          f"grado medio {k.mean():.1f}", flush=True)
+
 # ---------- bateria, toda por algebra dispersa
 tri = triangles_blocked(A)
 clust = np.divide(2 * tri, k * (k - 1), out=np.zeros(n), where=k > 1)

@@ -44,6 +44,21 @@ A = ((A + A.T) > 0).astype(float)
 A.setdiag(0)
 A.eliminate_zeros()
 k = np.asarray(A.sum(1)).ravel()
+
+# ---------- restriccion a la componente mayor
+# Sin esto lambda_2 = 0 y las tres columnas fiedler_* quedan inertes: omega_n
+# avisa de ello. STRING trae 126 componentes y BioPlex 17, casi todas diminutas.
+from scipy.sparse.csgraph import connected_components as _cc  # noqa: E402
+_, _lab = _cc(A, directed=False)
+_keep = np.where(_lab == np.bincount(_lab).argmax())[0]
+if len(_keep) < A.shape[0]:
+    A = csr_matrix(A[_keep][:, _keep])
+    nodes = [nodes[i] for i in _keep]
+    n = len(nodes)
+    k = np.asarray(A.sum(1)).ravel()
+    print(f"componente mayor: {n} nodos, {int(A.nnz/2)} aristas, "
+          f"grado medio {k.mean():.1f}", flush=True)
+
 print("BioPlex:", {kk: (round(v, 4) if isinstance(v, float) else v)
                    for kk, v in screen(A).items()}, flush=True)
 
