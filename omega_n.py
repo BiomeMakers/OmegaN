@@ -97,6 +97,16 @@ def _fiedler(A: csr_matrix, k: np.ndarray, seed: int = 2) -> np.ndarray:
     Homogeneous graphs were never affected: on Erdos-Renyi and configuration
     graphs up to mean degree 45 the old routine already agreed with dense
     ``eigh`` to four decimals. The failure needs a heavy tail to appear.
+
+    On tolerance. ``tol=1e-8`` is reached silently on every well-conditioned
+    graph tested, returning the same vector as a tighter request to four
+    decimals while emitting no convergence warning. So a warning that survives
+    this setting is worth reading rather than suppressing: on `minesweeper`
+    (lambda_2 = lambda_3 exactly) and `roman-empire` (lambda_2 = 2.5e-6) it
+    persists at any tolerance, because the eigenvector is not unique and no
+    solver can converge to it. There the three ``fiedler_*`` columns are
+    seed-dependent and should not be used; ``screen`` reports the normalised
+    spectral gap that identifies these cases.
     """
     n = A.shape[0]
     L = (diags(k) - A).tocsr()
@@ -107,7 +117,7 @@ def _fiedler(A: csr_matrix, k: np.ndarray, seed: int = 2) -> np.ndarray:
     rng = np.random.default_rng(seed)
     X0 = rng.standard_normal((n, 2))
     X0 -= Y @ (Y.T @ X0)
-    vals, vecs = lobpcg(L, X0, Y=Y, M=M, largest=False, maxiter=800, tol=1e-10)
+    vals, vecs = lobpcg(L, X0, Y=Y, M=M, largest=False, maxiter=2000, tol=1e-8)
     return vecs[:, int(np.argmin(np.asarray(vals).ravel()))]
 
 
