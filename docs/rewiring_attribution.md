@@ -154,5 +154,5 @@ addressed to a matched-null request in whole-brain modelling, is published as a
 notebook at `github.com/BiomeMakers/OmegaN` under `notebooks/`.
 
 The descriptor used to quantify triadic organisation, and the argument for why it
-is not spectrally determined, are in the accompanying preprint in the same
-repository.
+is not spectrally determined, are in the accompanying preprint:
+[arXiv:2609.01633](https://arxiv.org/abs/2609.01633).

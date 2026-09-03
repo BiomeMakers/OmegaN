@@ -3,6 +3,8 @@
 Reference implementation for **Omega-N: Interpretable Structural Node Descriptors
 and Their Applicability Domain** (A. Acedo, Biome Makers Inc).
 
+Paper: [arXiv:2609.01633](https://arxiv.org/abs/2609.01633)
+
 Ten interpretable features per node, computed from the graph alone. No node
 attributes, no training, no embeddings.
 
@@ -121,8 +123,10 @@ component indicator. **Restrict your graph to its largest connected component**;
   title  = {Omega-N: Interpretable Structural Node Descriptors and
             Their Applicability Domain},
   author = {Acedo, Alberto},
-  year   = {2026},
-  note   = {arXiv preprint}
+  year         = {2026},
+  eprint       = {2609.01633},
+  archivePrefix= {arXiv},
+  primaryClass = {physics.soc-ph}
 }
 ```
 

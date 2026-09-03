@@ -7,4 +7,9 @@ authors:
     affiliation: "Biome Makers Inc"
 year: 2026
 license: MIT
+identifiers:
+  - type: other
+    value: "arXiv:2609.01633"
+    description: "arXiv preprint"
+url: "https://arxiv.org/abs/2609.01633"
 repository-code: "https://github.com/BiomeMakers/OmegaN"
