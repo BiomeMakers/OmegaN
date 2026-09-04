@@ -1,0 +1,16 @@
+gensim==4.4.0
+joblib==1.5.3
+networkx==3.2.1
+numpy==2.0.2
+pandas==2.3.3
+pyarrow==21.0.0
+python-dateutil==2.9.0.post0
+pytz==2026.3.post1
+scikit-learn==1.6.1
+scipy==1.13.1
+six==1.17.0
+smart_open==7.5.0
+threadpoolctl==3.6.0
+tzdata==2026.3
+wrapt==2.4.0
+xgboost==2.1.4

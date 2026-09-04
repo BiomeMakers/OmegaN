@@ -45,21 +45,31 @@ Two statistics, neither computed from the descriptor's performance.
 
 | network | mean degree (S1) | I(k;y)/H(y) (S2) | outcome |
 |---|---|---|---|
-| tolokers | 88.3 | 0.014 | win (0.795 vs 0.769) |
+| tolokers | 88.3 | 0.014 | win (0.795 vs 0.770) |
 | europe-airports | 30.0 | 0.379 | tie (0.592 vs 0.589) |
 | usa-airports | 22.9 | 0.328 | tie (0.680 vs 0.685) |
-| amazon-ratings | 7.6 | 0.002 | tie (0.470 vs 0.443), under review |
-| questions | 6.3 | 0.033 | tie (0.693 vs 0.681), under review |
+| amazon-ratings | 7.6 | 0.002 | win (0.470 vs 0.459) |
+| questions | 6.3 | 0.033 | win (0.693 vs 0.684) |
 | minesweeper (null) | 7.9 | 0.000 | chance for every arm |
 | brazil-airports | 15.3 | **0.650** | out of domain by S2 |
 | roman-empire | **2.9** | 0.087 | out of domain by S1 |
 
-Two outcomes are marked *under review*. With the corrected descriptor, Omega-N now
-sits above the ReFeX figure on `amazon-ratings` and `questions`, where the earlier
-numbers were ties. They are **not** reclassified here: the ReFeX figures come from
-code that is not in this repository, so it cannot be verified that rival and
-descriptor were measured in the same harness. Reclassifying a tie as a win requires
-re-measuring the rival, not only the descriptor.
+The rival column changed in v2. In v1 the ReFeX figures came from code that was
+not in this repository, so it could not be established that rival and descriptor
+had been measured in the same harness, and two outcomes were reported as ties on
+figures that could not be checked. `experiments/refex_h2h.py` now implements ReFeX
+and runs it on the official splits with the same classifier and metric, sweeping
+depth 2 to 5 and reporting the rival's best. Both former ties resolve as wins:
+`amazon-ratings` 0.470 against 0.459, `questions` 0.693 against 0.684. Neither
+margin is large, and both exceed the standard error of their arms.
+
+The implementation does not weaken the rival: on `tolokers` it reaches 0.770,
+above the 0.761-0.769 reported in v1, so if anything it favours ReFeX.
+
+`roman-empire` remains a loss, 0.322 against 0.328. That is where it should be. It
+is the one network `screen` rejects, mean degree 2.9 with no triadic substrate to
+measure, and the descriptor loses exactly where its own applicability criterion
+says not to use it.
 
 The rule "mean degree at least 4 and I(k;y)/H(y) at most 0.5" partitions the eight
 networks without error, and every threshold pair in [3, 6] × [0.45, 0.60] gives the
@@ -228,3 +238,18 @@ gap, which misranks the cases. Measured: `minesweeper` 8e-19 and `roman-empire`
 threshold of 1e-06 separates the two groups with almost two orders of magnitude of
 margin. On the affected networks the effect on accuracy is negligible (+0.003 and
 -0.001 from dropping the columns); the problem is reproducibility, not validity.
+
+
+## Note on library versions
+
+The tables are sensitive to the version of scikit-learn, and the released
+`requirements.txt` did not pin it. On `amazon-ratings` the Omega-N figure is 0.4702
+under scikit-learn 1.6.1 and 0.4403 under 1.8.0, with identical features, splits
+and seed: the ten descriptor columns were checked to have the same fingerprint on
+both machines, so the difference is entirely the classifier. That gap is of the
+same order as the margin separating Omega-N from its rivals on that network, and
+the degree baseline does not move at all between versions, which is what makes it
+easy to miss.
+
+Every figure in this file was produced with python 3.9, numpy 2.0.2, scipy 1.13.1
+and scikit-learn 1.6.1. `requirements-lock.txt` records the full environment.
